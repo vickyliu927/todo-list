@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>To-do List</h1>
+        <div class="todo-input">
+            <input type="text" id="todoInput" placeholder="Add a new task...">
+            <select id="prioritySelect">
+                <option value="low">Low Priority</option>
+                <option value="medium">Medium Priority</option>
+                <option value="high">High Priority</option>
+            </select>
+            <button id="addButton">Add</button>
+        </div>
+        <ul id="todoList" class="todo-list">
+            <!-- Todo items will be added here dynamically -->
+        </ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
