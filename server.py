@@ -13,7 +13,20 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # Initialize Flask app
 app = Flask(__name__)
 app.static_folder = os.path.abspath(os.path.dirname(__file__))
-CORS(app)
+
+# Configure CORS
+allowed_origins = [
+    "http://localhost:8000",  # Local development
+    "https://todo-list-frontend.onrender.com",  # Your frontend URL on Render
+    "https://vickyliu927.github.io"  # Your GitHub Pages URL
+]
+CORS(app, resources={
+    r"/*": {
+        "origins": allowed_origins,
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 # Local fallback summary function
 def generate_local_summary(todos, category, completed_tasks, high_priority, medium_priority, low_priority, overdue_tasks):
@@ -131,4 +144,5 @@ def serve_static(filename):
     return send_from_directory(app.static_folder, filename)
 
 if __name__ == '__main__':
-    app.run(port=8000, debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)

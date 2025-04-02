@@ -358,36 +358,65 @@ document.addEventListener('DOMContentLoaded', function() {
             return text.toLowerCase();
         }
 
+        // Backend URL configuration
+        const BACKEND_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:8000' 
+            : 'https://todo-list-backend.onrender.com';
+
         // Update the generateFunnySummary function to use the API
         async function generateFunnySummary() {
-            const todos = categories[currentCategory];
-            if (todos.length === 0) {
-                return `Empty ${currentCategory} list. Living your best life or expert procrastinator? 🤔`;
-            }
-
             try {
-                const response = await fetch('http://localhost:8000/api/generate-summary', {
+                const todos = categories[currentCategory];
+                const response = await fetch(`${BACKEND_URL}/api/generate-summary`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         todos: todos,
-                        category: currentCategory,
-                        currentTime: new Date().toISOString()
+                        category: currentCategory
                     })
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
-                return data.summary;
+                elements.aiSummary.textContent = data.summary;
+                elements.aiSummary.style.display = 'block';
             } catch (error) {
-                console.error('Error getting AI summary:', error);
-                // Fallback to basic summary if API fails
-                return `${todos.filter(todo => todo.completed).length} done, ${todos.filter(todo => !todo.completed).length} to go!`;
+                console.error('Error generating summary:', error);
+                // Use local fallback
+                const todos = categories[currentCategory];
+                const completed = todos.filter(todo => todo.completed).length;
+                const total = todos.length;
+                const remaining = total - completed;
+                
+                let template = getRandomElement(summaryTemplates);
+                let motivation = '';
+                
+                if (total === 0) {
+                    elements.aiSummary.textContent = "No tasks yet! Time to add some! 🎯";
+                } else {
+                    const progress = completed / total;
+                    if (progress === 1) {
+                        motivation = getRandomElement(motivationalSnippets.great);
+                    } else if (progress >= 0.5) {
+                        motivation = getRandomElement(motivationalSnippets.good);
+                    } else {
+                        motivation = getRandomElement(motivationalSnippets.needsWork);
+                    }
+                    
+                    elements.aiSummary.textContent = template
+                        .replace('{completed}', completed)
+                        .replace('{total}', total)
+                        .replace('{remaining}', remaining)
+                        .replace('{motivation}', motivation)
+                        .replace('{reaction}', motivation)
+                        .replace('{comment}', motivation);
+                }
+                elements.aiSummary.style.display = 'block';
             }
         }
 
