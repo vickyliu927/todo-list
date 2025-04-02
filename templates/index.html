@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List App</title>
+    <title>Todo List</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Sound effects -->
     <audio id="highPrioritySound" src="https://www.soundjay.com/buttons/sounds/button-09a.mp3"></audio>
@@ -16,43 +16,42 @@
 </head>
 <body>
     <div class="container">
-        <h1>To-do List</h1>
-        
-        <!-- Tab Management -->
-        <div class="tab-management">
-            <div class="tab-list" id="tabList">
-                <!-- Tabs will be added here -->
+        <div class="header">
+            <h1>Todo List</h1>
+            <div class="user-info">
+                <span>Welcome, {{ current_user.username }}!</span>
+                <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
             </div>
-            <button id="newTabBtn" class="new-tab-btn">+ New Category</button>
-        </div>
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar">
-                <div class="progress-fill"></div>
-            </div>
-            <span class="progress-text">0% Complete</span>
-        </div>
-        <div class="ai-summary" id="aiSummary">
-            Loading your personalized sass... 🤔
         </div>
 
-        <!-- Todo Input Area -->
-        <div class="todo-input">
+        <div class="add-todo">
             <input type="text" id="todoInput" placeholder="Add a new task...">
             <select id="prioritySelect">
-                <option value="" disabled selected>Select Priority</option>
                 <option value="low">Low Priority</option>
                 <option value="medium">Medium Priority</option>
                 <option value="high">High Priority</option>
             </select>
-            <input type="datetime-local" id="dueDateInput">
-            <button id="addButton">Add</button>
+            <input type="date" id="dueDateInput">
+            <button onclick="addTodo()">Add Task</button>
         </div>
 
-        <!-- Todo List Container -->
-        <ul id="todoList" class="todo-list">
-            <!-- Todo items will be added here dynamically -->
-        </ul>
+        <div class="categories">
+            <select id="categorySelect">
+                <option value="All">All Categories</option>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Shopping">Shopping</option>
+            </select>
+            <button onclick="addCategory()" class="new-category-btn">New Category</button>
+        </div>
+
+        <div id="todoList"></div>
+
+        <div class="summary-section">
+            <button onclick="generateSummary()" class="summary-btn">Generate AI Summary</button>
+            <div id="summaryText" class="summary-text"></div>
+        </div>
     </div>
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
 </body>
 </html> 
