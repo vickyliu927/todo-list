@@ -126,7 +126,7 @@ Requirements:
             top_p=0.9
         )
 
-        summary = response.choices[0].message.content.strip()
+        summary = response.choices[0].message["content"].strip()
         print(f"Generated summary: {summary}")
         return jsonify({"summary": summary})
 
