@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Backend URL configuration
         const BACKEND_URL = window.location.hostname === 'localhost' 
             ? 'http://localhost:8000' 
-            : 'https://todo-list-backend.onrender.com';
+            : 'https://todo-list-backend-9e0z.onrender.com';
 
         // Update the generateFunnySummary function to use the API
         async function generateFunnySummary() {
